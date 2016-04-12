@@ -1,0 +1,16 @@
+2a Avaliação de Lóg. de Programação -> Entrega - 7/12/15
+
+3 cenas (Menu.js, Game.js e Result.js) -> Transição da cena de menu para cena de Game, da cena de Game para cena de Result e da cena de Result para cena de Menu;
+
+FadeIn/FadeOut entre as cenas; 
+
+Na cena de Game, deverá ter um personagem (Player.js) atirando (Shot.js) em 4 direções tentando acertar um quadrado (Square.js) que aparece (aleatório dentro do canvas) e desaparace (ou quando toma um tiro, ou depois de 3 segundos);
+
+A cada acerto um contador de pontos é adicionado +1;
+
+Se o jogador deixar passar 3 quadrados de alvo, o jogo acaba e vai para cena de Result;
+
+Na cena de Result existe o Highscore (o máximo de quadrados acertados) do player; Se o player bateu esse record, salvar o novo resultado no localStorage; 
+
+Grupos:
+

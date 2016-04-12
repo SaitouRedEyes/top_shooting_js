@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<body onLoad="start()">
+<canvas id="myCanvas" width="800" height="600" style="border:1px solid #000000;">
+</canvas>
+
+<script src = "javascript/Menu.js"></script>
+<script src = "javascript/Game.js"></script>
+<script src = "javascript/Result.js"></script>
+<script src = "javascript/Player.js"></script>
+<script src = "javascript/Shot.js"></script>
+<script src = "javascript/Enemy.js"></script>
+<script src = "javascript/UIText.js"></script>
+
+<script>
+
+	var canvas = document.getElementById("myCanvas");
+	var context = canvas.getContext("2d");	
+	
+	var fadeStart = false;
+	var startTime, alpha, fadeOut, alphaLimit;
+	var fadeTime = 1;
+	
+	var scene = new Menu();	
+	
+	var _keyDown = function(e) { scene.keyboardHandler(e, true); }
+	var _keyUp   = function(e) { scene.keyboardHandler(e, false); }
+	
+	document.addEventListener("keyup", _keyUp, true);	
+	document.addEventListener("keydown", _keyDown, true);	
+
+	function ConfigureFade(out, ga, al)
+	{
+		startTime = new Date().getTime(); 	
+		fadeOut = out;
+		context.globalAlpha = ga;
+		alphaLimit = al;
+		fadeStart = true;
+	}
+	
+	function FadeTime()
+	{
+		alpha = fadeOut ? 1.0 - (gameElapsedTime() / fadeTime) :
+							    (gameElapsedTime() / fadeTime);
+		
+		if(alpha < 0 || alpha > 1) context.globalAlpha = alphaLimit; 
+		else 					   context.globalAlpha = alpha; 
+				
+		if(context.globalAlpha == 0 && 
+		   context.globalAlpha == alphaLimit)
+		{
+			fadeStart = false;
+			
+			switch(scene.name)
+			{
+				case "Menu":   scene = new Game(); break;
+				case "Game":   scene = new Result(); break;
+				case "Result": scene = new Menu(); break;
+			}
+		}
+		else if (context.globalAlpha == 1 && 
+		         context.globalAlpha == alphaLimit) fadeStart = false;
+	}
+
+	function gameElapsedTime()
+	{
+		current = (new Date()).getTime();		
+		elapsed = current - startTime;
+		return elapsed / 1000;
+	}
+	
+	function loop()
+	{
+		if(fadeStart) FadeTime();
+	
+		if(context.globalAlpha >= 1) scene.update();
+		scene.draw();
+		setTimeout(loop, 30);
+	}
+	
+	var start = function() { loop(); }	
+	
+</script>
